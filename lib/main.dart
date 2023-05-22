@@ -1,9 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ig_clone1/responsive/layout_screen.dart';
-import 'package:ig_clone1/responsive/mobile_screen_layout.dart';
-import 'package:ig_clone1/responsive/web_screen_layout.dart';
+import 'package:ig_clone1/screens/login_screen.dart';
 import 'package:ig_clone1/utils/colors.dart';
 
 void main() async {
@@ -30,12 +28,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: mobileBackgroundColor,
-        ),
-        home: const LayoutScreen(
-            webScreenLayout: WebScreenLayout(), mobileScreenLayout: MobileScreenLayout()));
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: mobileBackgroundColor,
+      ),
+      // home: const LayoutScreen(
+      //     webScreenLayout: WebScreenLayout(), mobileScreenLayout: MobileScreenLayout()));
+      home: const LoginScreen(),
+    );
   }
 }
