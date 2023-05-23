@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ig_clone1/utils/colors.dart';
+import 'package:ig_clone1/utils/utils.dart';
 
+import '../resources/auth_methods.dart';
 import '../widgets/text_input_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,13 +16,31 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwController = TextEditingController();
+  bool _isLoding = false;
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _emailController.dispose();
     _pwController.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoding = true;
+    });
+    String res =
+        await AuthMethods().loginUser(email: _emailController.text, password: _pwController.text);
+
+    if (res == '성공') {
+//
+    } else {
+//
+      showSnackbar(res, context);
+    }
+    setState(() {
+      _isLoding = false;
+    });
   }
 
   @override
@@ -55,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
               //비밀버호를 잊으셨나요?
               const SizedBox(height: 24),
               InkWell(
+                onTap: loginUser,
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
@@ -66,7 +87,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: blueColor),
                   child: const Text('로그인'),
                 ),
-                onTap: () {},
               ),
               const SizedBox(height: 12),
               //또는
