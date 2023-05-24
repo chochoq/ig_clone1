@@ -3,20 +3,24 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ig_clone1/resources/auth_methods.dart';
+import 'package:ig_clone1/responsive/layout_screen.dart';
+import 'package:ig_clone1/responsive/mobile_screen_layout.dart';
+import 'package:ig_clone1/responsive/web_screen_layout.dart';
+import 'package:ig_clone1/screens/login_screen.dart';
 import 'package:ig_clone1/utils/colors.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../utils/utils.dart';
 import '../widgets/text_input_field.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
@@ -54,7 +58,19 @@ class _SignupScreenState extends State<SignupScreen> {
     if (!mounted) return;
     if (res != '성공') {
       showSnackbar(res, context);
+    } else {
+      // navigateToLogin();
+
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const LayoutScreen(
+                webScreenLayout: WebScreenLayout(),
+                mobileScreenLayout: MobileScreenLayout(),
+              )));
     }
+  }
+
+  void navigateToLogin() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override

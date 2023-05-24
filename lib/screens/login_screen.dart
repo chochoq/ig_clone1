@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ig_clone1/screens/sign_up_screen.dart';
 import 'package:ig_clone1/utils/colors.dart';
 import 'package:ig_clone1/utils/utils.dart';
 
 import '../resources/auth_methods.dart';
+import '../responsive/layout_screen.dart';
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/web_screen_layout.dart';
 import '../widgets/text_input_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,7 +20,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwController = TextEditingController();
-  bool _isLoding = false;
+  bool _isLodging = false;
 
   @override
   void dispose() {
@@ -27,20 +31,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void loginUser() async {
     setState(() {
-      _isLoding = true;
+      _isLodging = true;
     });
     String res =
         await AuthMethods().loginUser(email: _emailController.text, password: _pwController.text);
 
     if (res == '성공') {
-//
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const LayoutScreen(
+                webScreenLayout: WebScreenLayout(),
+                mobileScreenLayout: MobileScreenLayout(),
+              )));
     } else {
-//
       showSnackbar(res, context);
     }
     setState(() {
-      _isLoding = false;
+      _isLodging = false;
     });
+  }
+
+  void navigateToSignUp() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
   }
 
   @override
@@ -99,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Text('계정이 없으신가요?'),
                   const SizedBox(width: 5),
                   GestureDetector(
+                    onTap: navigateToSignUp,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: const Text(
@@ -106,7 +118,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(color: blueColor, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    onTap: () {},
                   ),
                 ],
               )

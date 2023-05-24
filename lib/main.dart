@@ -11,7 +11,7 @@ import 'package:ig_clone1/utils/colors.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
-    Firebase.initializeApp(
+    await Firebase.initializeApp(
         options: const FirebaseOptions(
       apiKey: "AIzaSyDlbVYpjtLIccMu61fkx7fZYOsi5outSyM",
       appId: "1:626587933473:web:c68efd9fb2e7ae4993bc60",
@@ -20,7 +20,7 @@ void main() async {
       storageBucket: "day1-img.appspot.com",
     ));
   } else {
-    Firebase.initializeApp();
+    await Firebase.initializeApp();
   }
   runApp(const MyApp());
 }
@@ -28,7 +28,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,16 +36,15 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: mobileBackgroundColor,
         ),
-        // home: const LayoutScreen(
-        //     webScreenLayout: WebScreenLayout(), mobileScreenLayout: MobileScreenLayout()));
-        // home: const LoginScreen(),
         home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {
                 if (snapshot.hasData) {
                   return const LayoutScreen(
-                      webScreenLayout: WebScreenLayout(), mobileScreenLayout: MobileScreenLayout());
+                    webScreenLayout: WebScreenLayout(),
+                    mobileScreenLayout: MobileScreenLayout(),
+                  );
                 } else if (snapshot.hasError) {
                   return Center(child: Text(snapshot.error.toString()));
                 }
