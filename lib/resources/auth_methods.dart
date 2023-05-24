@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:ig_clone1/resources/storage_methods.dart';
+import 'package:ig_clone1/models/user_model.dart' as model;
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -25,16 +26,17 @@ class AuthMethods {
         print(cred.user!.uid);
         String photoUrl = await StorageMethods().UploadImageToStorage('profilePic', file, false);
 
-        await _firestore.collection('user').doc(cred.user!.uid).set({
-          'username': username,
-          'uid': cred.user!.uid,
-          'email': email,
-          // 'password': password,
-          'bio': bio,
-          'followers': [],
-          'following': [],
-          'photoUrl': photoUrl
-        });
+        model.UserModel user = model.UserModel(
+          username: username,
+          email: email,
+          uid: cred.user!.uid,
+          bio: bio,
+          photoUrl: photoUrl,
+          followers: [],
+          following: [],
+        );
+
+        await _firestore.collection('user').doc(cred.user!.uid).set(user.toJSON());
         res = "성공";
       }
     } catch (err) {
